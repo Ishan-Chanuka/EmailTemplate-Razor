@@ -28,7 +28,9 @@ namespace RazorHtmlEmails.Common.Services
 
             var toAddresses = new List<string> { email };
 
-            SendEmail(toAddresses, "marielle.abernathy31@ethereal.email", "Confirm your Account", body);
+            string fromAddress = "marielle.abernathy31@ethereal.email";
+
+            SendEmail(toAddresses, fromAddress, "Confirm your Account", body);
         }
 
         private void SendEmail(List<string> toAddresses, string fromAddress, string subject, string body)
@@ -48,8 +50,11 @@ namespace RazorHtmlEmails.Common.Services
 
             using var client = new SmtpClient();
 
+            string user = "marielle.abernathy31@ethereal.email";
+            string password = "tKNvbXMYeufFj5jSda";
+
             client.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            client.Authenticate("marielle.abernathy31@ethereal.email", "tKNvbXMYeufFj5jSda");
+            client.Authenticate(user, password);
 
             client.Send(message);
             client.Disconnect(true);
