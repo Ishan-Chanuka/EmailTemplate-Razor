@@ -1,4 +1,4 @@
-<h2 align="center"> Email template using Razor </h2>
+<h2> Email template using Razor </h2>
 
 <p>This is a demo project which shows how to create a HTML email template as Razor view, send it using MailKit and Ethereal email as a SMTP service</p>
 
