@@ -12,47 +12,47 @@ Inside the `RazorHtmlEmails.Common` library you can find `RegisterAccountService
 1. You have to change the fromAddress to your Etherael email address in Register method.
 ```csharp
 public async Task Register(string email, string baseUrl)
-        {
-            var confirmAccountModel = new ConfirmAccountEmailViewModel($"{baseUrl}/{Guid.NewGuid()}");
+{
+        var confirmAccountModel = new ConfirmAccountEmailViewModel($"{baseUrl}/{Guid.NewGuid()}");
 
-            string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/ConfirmAccount/ConfirmAccount.cshtml", confirmAccountModel);
+        string body = await _razorViewToStringRenderer.RenderViewToStringAsync("/Views/Emails/ConfirmAccount/ConfirmAccount.cshtml", confirmAccountModel);
 
-            var toAddresses = new List<string> { email };
+        var toAddresses = new List<string> { email };
 
-            string fromAddress = "marielle.abernathy31@ethereal.email";
+        string fromAddress = "marielle.abernathy31@ethereal.email";
 
-            SendEmail(toAddresses, fromAddress, "Confirm your Account", body);
-        }
+        SendEmail(toAddresses, fromAddress, "Confirm your Account", body);
+}
 ```
 
 2. Then change the userName and password to your Ethereal user and password.
 ```csharp
 private void SendEmail(List<string> toAddresses, string fromAddress, string subject, string body)
+{
+        var message = new MimeMessage();
+        message.From.Add(new MailboxAddress("SenderFirstName SenderLastName", fromAddress));
+        foreach (var to in toAddresses)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("SenderFirstName SenderLastName", fromAddress));
-            foreach (var to in toAddresses)
-            {
-                message.To.Add(new MailboxAddress("RecipientFirstName RecipientLastName", to));
-            }
-            message.Subject = subject;
-
-            message.Body = new TextPart(TextFormat.Html)
-            {
-                Text = body
-            };
-
-            using var client = new SmtpClient();
-
-            string user = "marielle.abernathy31@ethereal.email";
-            string password = "tKNvbXMYeufFj5jSda";
-
-            client.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            client.Authenticate(user, password);
-
-            client.Send(message);
-            client.Disconnect(true);
+            message.To.Add(new MailboxAddress("RecipientFirstName RecipientLastName", to));
         }
+        message.Subject = subject;
+
+        message.Body = new TextPart(TextFormat.Html)
+        {
+            Text = body
+        };
+
+        using var client = new SmtpClient();
+
+        string user = "marielle.abernathy31@ethereal.email";
+        string password = "tKNvbXMYeufFj5jSda";
+
+        client.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+        client.Authenticate(user, password);
+
+        client.Send(message);
+        client.Disconnect(true);
+}
 ```
 
 Now you can run the program and test it. You can view your email in Etheral inbox.
